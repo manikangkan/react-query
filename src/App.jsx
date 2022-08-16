@@ -1,34 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
 
-function App() {
-  const [count, setCount] = useState(0)
+import Home from "./pages/Home";
+import SuperHeroes from "./pages/SuperHeroes";
+import RQSuperHeroes from "./pages/RQSuperHeroes";
 
+const queryClient = new QueryClient();
+
+const App = () => {
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/super-heroes">Traditional Superheroes</Link>
+            </li>
+            <li>
+              <Link to="/rq-super-heroes">RQ Superheroes</Link>
+            </li>
+          </ul>
+        </nav>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/super-heroes" element={<SuperHeroes />} />
+          <Route path="/rq-super-heroes" element={<RQSuperHeroes />} />
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
+};
 
-export default App
+export default App;
