@@ -10,19 +10,35 @@ const RQSuperHeroes = () => {
   //   return axios.get("http://localhost:4000/superheroes");
   // });
 
+  const onSuccess = (data) => {
+    console.log("Perform side-effects after data fetching", data);
+  };
+
+  const onError = (error) => {
+    console.log("Perform side-effects after encountering error", error);
+  };
+
   const { isLoading, data, isError, error, isFetching, refetch } = useQuery(
     ["super-heros"],
     fetchSuperheroes,
+    // {
+    // cacheTime: 5000
+    // staleTime: 30000,
+    // staleTime: 0, //default staleTime
+    // refetchOnMount: true,
+    // refetchOnMount: false,
+    // refetchOnWindowFocus: true,
+    // refetchInterval: 2000,
+    // refetchIntervalInBackground: true,
+    // enabled: false,
+    // },
     {
-      // cacheTime: 5000
-      // staleTime: 30000,
-      // staleTime: 0, //default staleTime
-      // refetchOnMount: true,
-      // refetchOnMount: false,
-      // refetchOnWindowFocus: true,
-      // refetchInterval: 2000,
-      // refetchIntervalInBackground: true,
-      enabled: false,
+      onSuccess,
+      onError,
+      select: (data) => {
+        const superHeroNames = data.data.map((superHero) => superHero.name);
+        return superHeroNames;
+      },
     }
   );
 
@@ -45,9 +61,12 @@ const RQSuperHeroes = () => {
       <h1>RQ Superheroes</h1>
       <button onClick={refetch}>Fetch superHeroes</button>
       <ul>
-        {data?.data.map((superHero) => (
-          <li key={superHero.id}>{superHero.name}</li>
+        {data.map((superHeroName) => (
+          <li key={superHeroName}>{superHeroName}</li>
         ))}
+        {/* {data?.data.map((superHero) => (
+          <li key={superHero.id}>{superHero.name}</li>
+        ))} */}
       </ul>
     </div>
   );
