@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const fetchSuperheroes = () => {
   return axios.get("http://localhost:4000/superheroes");
@@ -10,12 +10,22 @@ const RQSuperHeroes = () => {
   //   return axios.get("http://localhost:4000/superheroes");
   // });
 
-  const { isLoading, data } = useQuery("super-heros", fetchSuperheroes);
+  const { isLoading, data, isError, error, isFetching } = useQuery(
+    ["super-heros"],
+    fetchSuperheroes,
+    {
+      cacheTime: 5000
+    }
+  );
 
-  console.log(data);
+  console.table({ isLoading, isFetching });
 
   if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>{error.message}</div>;
   }
 
   return (

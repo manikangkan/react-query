@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
+
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import Home from "./pages/Home";
 import SuperHeroes from "./pages/SuperHeroes";
@@ -30,6 +32,7 @@ const App = () => {
           <Route path="/rq-super-heroes" element={<RQSuperHeroes />} />
         </Routes>
       </BrowserRouter>
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </QueryClientProvider>
   );
 };
